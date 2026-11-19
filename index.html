@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy Store - Aneka Makanan & Minuman Mitra Pilihan</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-stone-50 text-stone-900 antialiased min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="sticky top-0 z-40 glass-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo & Brand (Secret Click Trigger: Klik 4x untuk Akses Rahasia) -->
+                <div id="brandLogoTrigger" class="flex items-center gap-3 cursor-pointer select-none group" title="Holy Store (Klik 4x untuk Akses Pengelola)">
+                    <img id="brandLogoImg" src="assets/logo.jpg" alt="Holy Store Logo" class="h-12 w-auto max-w-[120px] object-contain rounded-xl shadow-xs group-hover:scale-105 transition-transform duration-200">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-black text-xl tracking-tight flex items-center leading-none">
+                                <span class="text-orange-600">holy</span><span class="text-stone-800 ml-1">store</span>
+                            </span>
+                            <span class="hidden md:inline-flex items-center gap-1 text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full border border-amber-200">
+                                <i class="fa-solid fa-handshake"></i> Reseller Resmi
+                            </span>
+                        </div>
+                        <p id="storeTagline" class="text-xs text-stone-500 hidden sm:block truncate max-w-xs md:max-w-md">Aneka Makanan & Minuman Lezat Mitra Pilihan</p>
+                    </div>
+                </div>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-md mx-4">
+                    <div class="relative w-full">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                        <input type="text" id="searchInput" placeholder="Cari menu makanan, minuman, atau nama mitra..." class="w-full pl-11 pr-4 py-2.5 rounded-2xl bg-stone-100/80 border border-stone-200/80 focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 text-xs sm:text-sm transition-all duration-200 outline-none">
+                    </div>
+                </div>
+
+                <!-- Right Actions: Daftar Reseller & Cart -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Daftar Reseller Button -->
+                    <button type="button" onclick="window.KulinerHub.openResellerModal()" class="px-3 sm:px-4 py-2.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-extrabold flex items-center gap-1.5 transition cursor-pointer shadow-xs active:scale-95">
+                        <i class="fa-solid fa-user-plus text-orange-600"></i>
+                        <span>Daftar Reseller</span>
+                    </button>
+
+                    <!-- Cart Button -->
+                    <button type="button" onclick="window.KulinerHub.toggleCart(true)" class="relative px-4 py-2.5 rounded-2xl bg-orange-600 hover:bg-orange-700 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center gap-2.5 shadow-lg shadow-orange-600/25 transition cursor-pointer">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="hidden sm:inline">Keranjang</span>
+                        <span class="cart-count-badge hidden absolute -top-1.5 -right-1.5 bg-stone-900 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center ring-2 ring-white">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 md:hidden">
+                <div class="relative w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs"></i>
+                    <input type="text" oninput="document.getElementById('searchInput').value = this.value; document.getElementById('searchInput').dispatchEvent(new Event('input'))" placeholder="Cari makanan, minuman, atau mitra..." class="w-full pl-10 pr-4 py-2 rounded-xl bg-stone-100 border border-stone-200 text-xs focus:outline-none focus:border-orange-500">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= HERO BANNER ================= -->
+    <section class="hero-gradient py-10 sm:py-14 border-b border-orange-100 relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-orange-300/20 blur-3xl pointer-events-none"></div>
+        <div class="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-amber-300/20 blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Left Banner Text -->
+                <div class="lg:col-span-7 space-y-4 sm:space-y-5">
+                    <div class="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-300/50 px-3 py-1.5 rounded-full text-xs font-bold text-orange-700">
+                        <i class="fa-solid fa-qrcode text-orange-600"></i> Bayar Mudah QRIS & Bukti Transfer Instan
+                    </div>
+
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-stone-900 tracking-tight leading-tight">
+                        Pesan Menu Favorit di <span class="gradient-text">Holy Store</span>
+                    </h2>
+
+                    <p class="text-stone-600 text-sm sm:text-base leading-relaxed max-w-xl">
+                        Selamat datang di <strong>Holy Store</strong>! Kami bermitra dengan berbagai dapur & kedai UMKM pilihan untuk menyajikan aneka makanan lezat dan minuman segar. Bayar mudah via QRIS dan kirim bukti transfer secara instan.
+                    </p>
+
+                    <!-- Feature Badges -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-orange-100/80 shadow-xs flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-base shrink-0">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-stone-800 block">Kategori Terpisah</span>
+                                <span class="text-[10px] text-stone-500">Makanan & Minuman</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-orange-100/80 shadow-xs flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-base shrink-0">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-stone-800 block">Stok Real-Time</span>
+                                <span class="text-[10px] text-stone-500">Selalu Update</span>
+                            </div>
+                        </div>
+
+                        <div class="col-span-2 sm:col-span-1 bg-white/90 backdrop-blur-sm p-3 rounded-2xl border border-orange-100/80 shadow-xs flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-base shrink-0">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-stone-800 block">Upload Bukti SS</span>
+                                <span class="text-[10px] text-stone-500">Langsung Terverifikasi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reseller Invitation CTA -->
+                    <div class="pt-1 flex flex-wrap items-center gap-3">
+                        <button type="button" onclick="window.KulinerHub.openResellerModal()" class="px-5 py-3 rounded-2xl bg-stone-900 hover:bg-stone-800 text-white font-extrabold text-xs sm:text-sm flex items-center gap-2 shadow-lg transition active:scale-95 cursor-pointer">
+                            <i class="fa-solid fa-handshake text-orange-400"></i>
+                            <span>Tertarik Jadi Reseller? Klik Untuk Gabung &rarr;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Banner Visual (QRIS & Highlights) -->
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-sm">
+                        <div class="bg-white rounded-3xl p-5 border border-stone-200 shadow-2xl relative">
+                            <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    <span class="text-xs font-bold text-stone-800">QRIS Multi-Payment Aktif</span>
+                                </div>
+                                <span class="text-[11px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md">Holy Store</span>
+                            </div>
+
+                            <div class="my-4 bg-stone-900 rounded-2xl p-4 text-white text-center">
+                                <div class="flex items-center justify-between text-[11px] text-stone-400 mb-2">
+                                    <span>NMID: ID1020261117001</span>
+                                    <span class="font-bold text-white tracking-widest">QRIS</span>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl inline-block shadow-inner">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=00020101021226600016ID.CO.QRIS.WWW011893600523000000000102150857418329725204581253033605802ID5910HOLY+STORE6007JAKARTA6304ABCD" alt="Mock QRIS" class="w-36 h-36 mx-auto object-contain">
+                                </div>
+                                <p class="text-[11px] text-stone-300 mt-2 font-medium">BCA, GoPay, OVO, Mandiri, Dana, ShopeePay</p>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs text-stone-500 bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+                                <i class="fa-solid fa-camera text-orange-600 text-sm"></i>
+                                <span>Selesai transfer, upload screenshot bukti pembayaran di form checkout.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= MAIN CATALOG SECTION ================= -->
+    <main id="catalogSection" class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
+        
+        <!-- Category & Sort Controls (Clean UI, Dropdown Seller Removed) -->
+        <div class="bg-white rounded-3xl p-4 sm:p-6 border border-stone-200/90 shadow-sm mb-8 space-y-4">
+            
+            <!-- Category Pills (Makanan vs Minuman) + Sort -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-bold text-stone-400 uppercase tracking-wider block mb-1">Pilih Kategori Menu</span>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <!-- All -->
+                        <button type="button" data-category="all" class="category-btn px-4 py-2 rounded-2xl bg-orange-600 text-white font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md shadow-orange-500/20 transition cursor-pointer">
+                            <i class="fa-solid fa-border-all"></i>
+                            <span>Semua Menu</span>
+                            <span id="countSemua" class="bg-white/20 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                        </button>
+
+                        <!-- Makanan -->
+                        <button type="button" data-category="makanan" class="category-btn px-4 py-2 rounded-2xl bg-white text-stone-600 border border-stone-200 font-bold text-xs sm:text-sm flex items-center gap-2 hover:border-orange-300 transition cursor-pointer">
+                            <i class="fa-solid fa-utensils text-amber-600"></i>
+                            <span>🍔 Makanan</span>
+                            <span id="countMakanan" class="bg-stone-100 text-stone-600 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                        </button>
+
+                        <!-- Minuman -->
+                        <button type="button" data-category="minuman" class="category-btn px-4 py-2 rounded-2xl bg-white text-stone-600 border border-stone-200 font-bold text-xs sm:text-sm flex items-center gap-2 hover:border-orange-300 transition cursor-pointer">
+                            <i class="fa-solid fa-mug-hot text-cyan-600"></i>
+                            <span>🍹 Minuman</span>
+                            <span id="countMinuman" class="bg-stone-100 text-stone-600 text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sort Filter -->
+                <div class="flex items-center gap-2.5">
+                    <label class="text-xs font-bold text-stone-500 shrink-0">Urutkan:</label>
+                    <select id="sortSelect" class="text-xs font-semibold bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 text-stone-700 focus:outline-none focus:border-orange-500 cursor-pointer">
+                        <option value="popular">🔥 Paling Laris</option>
+                        <option value="price-asc">💵 Harga Terendah</option>
+                        <option value="price-desc">💎 Harga Tertinggi</option>
+                        <option value="rating">⭐ Rating Tertinggi</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Notice -->
+            <div class="flex items-center justify-between text-xs text-stone-500 pt-2 border-t border-stone-100">
+                <span class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                    Semua pesanan diproses higienis langsung dari dapur mitra pilihan.
+                </span>
+                <span class="font-medium text-stone-400">Stok diperbarui otomatis</span>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Injected via JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-16 bg-white rounded-3xl border border-dashed border-stone-200 p-8">
+            <div class="w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl mx-auto mb-4">
+                <i class="fa-solid fa-burger"></i>
+            </div>
+            <h4 class="font-extrabold text-stone-800 text-base mb-1">Menu Tidak Ditemukan</h4>
+            <p class="text-xs text-stone-500 max-w-sm mx-auto mb-4">Coba ubah kata kunci pencarian atau pilih kategori lainnya.</p>
+            <button onclick="document.getElementById('searchInput').value=''; document.querySelector('[data-category=all]').click();" class="px-4 py-2 rounded-xl bg-orange-600 text-white font-bold text-xs hover:bg-orange-700 transition">
+                Reset Semua Filter
+            </button>
+        </div>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-stone-900 text-stone-300 py-12 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div class="space-y-3 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <img src="assets/logo.jpg" alt="Holy Store" class="h-10 w-auto object-contain rounded-xl">
+                        <span class="font-black text-white text-xl tracking-tight">
+                            <span class="text-orange-500">holy</span> <span class="text-white">store</span>
+                        </span>
+                    </div>
+                    <p class="text-xs text-stone-400 leading-relaxed max-w-md">
+                        Platform katalog pemesanan makanan dan minuman reseller modern. Bermitra dengan puluhan produsen kuliner lokal terpercaya dengan sistem pembayaran QRIS yang mudah, aman, dan langsung terhubung ke WhatsApp.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold text-sm mb-3">Metode Pembayaran QRIS</h5>
+                    <div class="flex flex-wrap gap-2 text-xs text-stone-400">
+                        <span class="bg-stone-800 px-2.5 py-1 rounded-md border border-stone-700">BCA Mobile</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded-md border border-stone-700">Mandiri Livin</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded-md border border-stone-700">GoPay</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded-md border border-stone-700">OVO</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded-md border border-stone-700">DANA</span>
+                        <span class="bg-stone-800 px-2.5 py-1 rounded-md border border-stone-700">ShopeePay</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-stone-800 text-center text-xs text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="flex items-center gap-1.5">
+                    &copy; 2026 Holy Store. Semua Hak Dilindungi.
+                    <!-- Discreet Secret Lock Icon for Owner Access -->
+                    <i onclick="window.KulinerHub.triggerSecretAdmin()" class="fa-solid fa-lock text-stone-800 hover:text-stone-600 cursor-pointer text-[10px] ml-1" title=""></i>
+                </span>
+                <span>Dibangun untuk kelancaran operasional reseller</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= FLOATING CART PILL (MOBILE) ================= -->
+    <div class="fixed bottom-5 left-4 right-4 sm:hidden z-30">
+        <button onclick="window.KulinerHub.toggleCart(true)" class="w-full bg-orange-600 hover:bg-orange-700 active:scale-95 text-white py-3.5 px-5 rounded-2xl shadow-xl flex items-center justify-between font-bold text-sm">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Lihat Keranjang</span>
+                <span class="cart-count-badge bg-white text-orange-600 text-xs px-2 py-0.5 rounded-full font-black">0</span>
+            </div>
+            <span>Pesan Sekarang &rarr;</span>
+        </button>
+    </div>
+
+    <!-- ================= SHOPPING CART DRAWER ================= -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 transition-all duration-300 translate-x-full">
+        <div onclick="window.KulinerHub.toggleCart(false)" class="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity"></div>
+
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col justify-between z-10">
+            <div class="p-5 border-b border-stone-100 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-basket-shopping"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-base text-stone-900">Keranjang Belanja</h3>
+                        <p class="text-[11px] text-stone-500">Pilihan makanan & minuman Anda</p>
+                    </div>
+                </div>
+                <button onclick="window.KulinerHub.toggleCart(false)" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center text-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-5">
+                <div class="mb-4 bg-orange-50/70 p-3 rounded-2xl border border-orange-200/80">
+                    <label class="block text-[11px] font-bold text-orange-950 mb-1">
+                        <i class="fa-solid fa-truck-fast text-orange-600"></i> Metode Pengambilan / Pengiriman:
+                    </label>
+                    <select id="deliveryMethodSelect" class="w-full text-xs font-semibold bg-white border border-orange-200 rounded-xl px-3 py-2 text-stone-800 focus:outline-none">
+                        <option value="delivery">Pengantaran Delivery Kurir (+Rp 10.000)</option>
+                        <option value="takeaway">Ambil Sendiri / Takeaway (Gratis)</option>
+                    </select>
+                </div>
+
+                <div id="cartEmptyNotice" class="text-center py-16">
+                    <div class="w-16 h-16 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center text-2xl mx-auto mb-3">
+                        <i class="fa-solid fa-cart-arrow-down"></i>
+                    </div>
+                    <h4 class="font-bold text-stone-700 text-sm">Keranjang Masih Kosong</h4>
+                    <p class="text-xs text-stone-400 mt-1 max-w-xs mx-auto">Yuk pilih aneka menu makanan lezat dan minuman segar dari mitra kami!</p>
+                </div>
+
+                <div id="cartItemsContainer"></div>
+            </div>
+
+            <div class="p-5 border-t border-stone-100 bg-stone-50 space-y-3">
+                <div class="space-y-1.5 text-xs">
+                    <div class="flex justify-between text-stone-500">
+                        <span>Subtotal Menu</span>
+                        <span id="cartSubtotal" class="font-semibold text-stone-800">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-stone-500">
+                        <span>Ongkos Kirim</span>
+                        <span id="cartShipping" class="font-semibold text-stone-800">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-base font-extrabold text-stone-900 pt-2 border-t border-stone-200">
+                        <span>Total Tagihan</span>
+                        <span id="cartTotal" class="text-orange-600 font-black">Rp 0</span>
+                    </div>
+                </div>
+
+                <button id="btnCheckout" onclick="window.KulinerHub.openCheckout()" class="w-full bg-orange-600 hover:bg-orange-700 active:scale-95 disabled:bg-stone-300 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-qrcode"></i> Lanjut ke Pembayaran QRIS
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CHECKOUT & QRIS MODAL ================= -->
+    <div id="checkoutModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div onclick="window.KulinerHub.closeCheckout()" class="absolute inset-0 bg-stone-900/70 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 z-10 flex flex-col">
+            <div class="p-5 border-b border-stone-100 flex items-center justify-between sticky top-0 bg-white z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-cash-register"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-base sm:text-lg text-stone-900">Pembayaran QRIS & Konfirmasi Pesanan</h3>
+                        <p class="text-xs text-stone-500">Invoice: <span id="checkoutInvoice" class="font-mono font-bold text-orange-600">INV-XXXX</span></p>
+                    </div>
+                </div>
+                <button onclick="window.KulinerHub.closeCheckout()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center text-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="formCheckout" class="p-5 sm:p-6 space-y-6">
+                <!-- Data Pemesan -->
+                <div>
+                    <h4 class="font-bold text-sm text-stone-800 mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+                        Data Pemesan & Alamat
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-600 mb-1">Nama Lengkap *</label>
+                            <input type="text" id="custName" required placeholder="Cth: Budi Santoso" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-stone-600 mb-1">Nomor WhatsApp Aktif *</label>
+                            <input type="tel" id="custPhone" required placeholder="Cth: 081234567890" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-stone-600 mb-1">Alamat Lengkap / Catatan Nomor Meja</label>
+                            <textarea id="custAddress" rows="2" placeholder="Cth: Jl. Melati No. 12, RT 02/05 (Dekat Pos Satpam)" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2 focus:bg-white focus:outline-none focus:border-orange-500"></textarea>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-semibold text-stone-600 mb-1">Catatan Tambahan untuk Reseller (Opsional)</label>
+                            <input type="text" id="custNotes" placeholder="Cth: Sambal dipisah, tolong bungkus rapi" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2 focus:bg-white focus:outline-none focus:border-orange-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ringkasan Pesanan -->
+                <div class="bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                    <h5 class="text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Ringkasan Pesanan Menu:</h5>
+                    <div id="checkoutItemsSummary" class="space-y-1"></div>
+                </div>
+
+                <!-- QRIS Box Section -->
+                <div>
+                    <h4 class="font-bold text-sm text-stone-800 mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+                        Scan QRIS untuk Pembayaran
+                    </h4>
+
+                    <div class="bg-gradient-to-br from-stone-50 to-orange-50/50 p-5 rounded-3xl border border-orange-200/90 flex flex-col md:flex-row items-center gap-6">
+                        <div class="qris-card p-4 rounded-2xl text-center max-w-[240px] w-full shrink-0 shadow-md">
+                            <div class="flex items-center justify-between border-b border-stone-200 pb-2 mb-2">
+                                <span class="text-[11px] font-bold text-stone-500">PEMBAYARAN RESMI</span>
+                                <span class="font-black text-sm tracking-widest text-stone-900">QRIS</span>
+                            </div>
+
+                            <div class="flex items-center justify-center gap-1.5 mb-1">
+                                <img src="assets/logo.jpg" alt="Holy Store" class="h-6 w-auto object-contain rounded-md">
+                                <p id="qrisStoreName" class="text-xs font-extrabold text-stone-800 uppercase tracking-tight truncate">HOLY STORE</p>
+                            </div>
+                            
+                            <div class="bg-white p-2 border border-stone-200 rounded-xl inline-block shadow-xs">
+                                <img id="qrisImage" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020101021226600016ID.CO.QRIS.WWW011893600523000000000102150812345678905204581253033605802ID5919KULINER+HUB+RESELLER6007JAKARTA6304ABCD" alt="Scan QRIS" class="w-40 h-40 object-contain mx-auto">
+                            </div>
+
+                            <div class="mt-2 text-[10px] text-stone-500">
+                                Dicetak oleh: Reseller Payment Gateway
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 flex-1 text-xs">
+                            <div class="bg-white p-3.5 rounded-2xl border border-orange-200 shadow-xs">
+                                <span class="text-stone-500 block text-xs">Total yang Harus Dibayar:</span>
+                                <div id="checkoutTotal" class="text-2xl font-black text-orange-600 mt-0.5">Rp 0</div>
+                                <span class="text-[10px] text-emerald-600 font-semibold block mt-1">
+                                    <i class="fa-solid fa-circle-check"></i> Bebas biaya admin transaksi
+                                </span>
+                            </div>
+
+                            <div class="space-y-1.5 text-stone-600">
+                                <p class="font-bold text-stone-800">Cara Pembayaran QRIS:</p>
+                                <ol class="list-decimal list-inside space-y-1 text-xs text-stone-600">
+                                    <li>Buka aplikasi m-Banking (BCA, Mandiri, BRI) atau e-Wallet (GoPay, OVO, ShopeePay, DANA).</li>
+                                    <li>Pilih menu <strong>Scan QR / QRIS</strong>.</li>
+                                    <li>Arahkan kamera ke kode QRIS di samping atau screenshot QRIS ini.</li>
+                                    <li>Masukkan nominal tepat sesuai total tagihan di atas.</li>
+                                    <li>Konfirmasi pembayaran hingga muncul halaman <strong>"Berhasil"</strong>.</li>
+                                    <li>Ambil <strong>Screenshot (SS)</strong> bukti pembayaran tersebut.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proof Screenshot Upload -->
+                <div>
+                    <h4 class="font-bold text-sm text-stone-800 mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">3</span>
+                        Upload Bukti Screenshot (SS) Pembayaran *
+                    </h4>
+
+                    <div id="uploadDropzone" class="upload-dropzone p-6 rounded-2xl text-center bg-stone-50 cursor-pointer relative hover:border-orange-500 transition">
+                        <input type="file" id="proofFileInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                        <div class="w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-xl mx-auto mb-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <p class="text-xs sm:text-sm font-bold text-stone-800">Klik di sini atau Drag & Drop foto screenshot bukti transfer</p>
+                        <p class="text-[11px] text-stone-500 mt-1">Format JPG, PNG, atau WebP (Maksimal 5MB)</p>
+                    </div>
+
+                    <div id="proofPreviewContainer" class="hidden bg-stone-50 p-4 rounded-2xl border border-stone-200 mt-3 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <img id="proofPreviewImg" src="" alt="Preview Bukti" class="w-14 h-14 rounded-xl object-cover border border-stone-300">
+                            <div>
+                                <span class="text-xs font-bold text-stone-800 block truncate max-w-xs" id="proofFileName">bukti_transfer.jpg</span>
+                                <span class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> Siap disertakan pada pesanan
+                                </span>
+                            </div>
+                        </div>
+                        <button type="button" id="btnRemoveProof" class="text-xs text-red-500 hover:text-red-700 font-bold px-3 py-1.5 rounded-lg border border-red-200 hover:bg-red-50 transition">
+                            <i class="fa-solid fa-trash"></i> Ganti Foto
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-end gap-3">
+                    <button type="button" onclick="window.KulinerHub.closeCheckout()" class="w-full sm:w-auto px-5 py-3 rounded-2xl border border-stone-200 text-stone-600 text-xs font-bold hover:bg-stone-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2 transition cursor-pointer">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Kirim Pesanan ke WhatsApp Admin</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= ORDER SUCCESS MODAL ================= -->
+    <div id="successModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-stone-900/70 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl border border-stone-200 z-10 space-y-4">
+            <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-4xl mx-auto shadow-inner">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <h3 class="font-extrabold text-xl text-stone-900">Pesanan Berhasil Dicatat!</h3>
+            <p class="text-xs text-stone-500 leading-relaxed">
+                Terima kasih telah memesan melalui reseller kami. Pesanan Anda dengan No. Invoice <strong id="successInvoiceId" class="text-orange-600 font-mono">INV-XXXX</strong> telah dicatat dalam sistem.
+            </p>
+
+            <div class="bg-stone-50 p-4 rounded-2xl border border-stone-200 text-left text-xs space-y-2">
+                <div class="flex justify-between">
+                    <span class="text-stone-500">Total Nominal QRIS:</span>
+                    <span id="successTotalAmount" class="font-extrabold text-stone-900">Rp 0</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-stone-500">Status Pembayaran:</span>
+                    <span class="font-bold text-amber-600">Menunggu Verifikasi SS</span>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-stone-500">
+                WhatsApp tidak dapat melampirkan bukti secara otomatis. Unduh bukti di bawah, lalu lampirkan ke pesan WhatsApp sebelum mengirimnya. Pesan WhatsApp otomatis terbuka; jika tidak, klik tombol chat:
+            </p>
+
+            <button type="button" onclick="window.KulinerHub.downloadProofForWhatsApp()" class="w-full py-3 px-4 rounded-2xl bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-download"></i> Unduh Bukti Screenshot untuk Dilampirkan
+            </button>
+
+            <a id="successWaLink" href="#" target="_blank" class="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/30 flex items-center justify-center gap-2 transition">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Buka Chat WhatsApp Admin
+            </a>
+
+            <button onclick="document.getElementById('successModal').classList.add('hidden')" class="w-full py-2.5 text-xs font-semibold text-stone-500 hover:text-stone-800 transition">
+                Kembali ke Beranda
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= HIDDEN ADMIN PIN MODAL (ACCESS VIA SECRET SHORTCUT/CLICK) ================= -->
+    <div id="adminPinModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div onclick="document.getElementById('adminPinModal').classList.add('hidden')" class="absolute inset-0 bg-stone-900/60 backdrop-blur-xs"></div>
+
+        <div class="relative bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-stone-200 z-10 space-y-4">
+            <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl mx-auto">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 class="font-extrabold text-lg text-stone-900">Akses Rahasia Pengelola</h3>
+                <p class="text-xs text-stone-500 mt-1">Masukkan PIN keamanan pemilik toko untuk mengatur stok dan pesanan (Default PIN: <strong>1234</strong>)</p>
+            </div>
+
+            <input type="password" id="adminPinInput" placeholder="PIN Rahasia" maxlength="6" class="w-full text-center text-xl font-bold tracking-widest bg-stone-50 border border-stone-200 rounded-xl py-3 focus:bg-white focus:outline-none focus:border-orange-500">
+
+            <div class="flex items-center gap-2">
+                <button onclick="document.getElementById('adminPinModal').classList.add('hidden')" class="flex-1 py-2.5 rounded-xl border border-stone-200 text-xs font-bold text-stone-600 hover:bg-stone-50">
+                    Batal
+                </button>
+                <button onclick="window.KulinerHub.checkAdminPin()" class="flex-1 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-xs font-bold text-white shadow-md shadow-orange-500/20">
+                    Masuk
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= HIDDEN MANAGEMENT PANEL MODAL ================= -->
+    <div id="adminModal" class="hidden fixed inset-0 z-50 flex">
+        <div onclick="document.getElementById('adminModal').classList.add('hidden')" class="absolute inset-0 bg-stone-900/70 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-none w-full h-full max-h-full overflow-y-auto shadow-2xl border-0 z-10 flex flex-col">
+            
+            <!-- Header -->
+            <div class="p-5 border-b border-stone-100 flex items-center justify-between sticky top-0 bg-white z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-stone-900 text-white flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-base sm:text-lg text-stone-900">Dashboard Admin Holy Store</h3>
+                        <p class="text-xs text-stone-500">Pantau pesanan, kelola stok, dan verifikasi pembayaran</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('adminModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center text-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="flex border-b border-stone-200 bg-stone-50 px-5 gap-4 overflow-x-auto text-xs font-bold text-stone-600">
+                <button type="button" data-admin-tab="adminTabDashboard" onclick="window.KulinerHub.showAdminTab('adminTabDashboard')" class="admin-tab-button py-3.5 border-b-2 border-orange-600 text-orange-600 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-chart-line"></i> Ringkasan Admin
+                </button>
+                <button type="button" data-admin-tab="adminTabOrders" onclick="window.KulinerHub.showAdminTab('adminTabOrders')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-receipt"></i> Pesanan Hari Ini
+                    <span id="adminUnhandledOrdersTabCount" class="rounded-full bg-orange-600 px-1.5 py-0.5 text-[10px] text-white">0</span>
+                </button>
+                <button type="button" data-admin-tab="adminTabProducts" onclick="window.KulinerHub.showAdminTab('adminTabProducts')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-utensils"></i> Edit Menu
+                </button>
+                <button type="button" data-admin-tab="adminTabStock" onclick="window.KulinerHub.showAdminTab('adminTabStock')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-boxes-stacked"></i> Edit Stok
+                </button>
+                <button type="button" data-admin-tab="adminTabAddStock" onclick="window.KulinerHub.showAdminTab('adminTabAddStock')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-box-open"></i> Tambah Stok
+                </button>
+                <button type="button" data-admin-tab="adminTabResellers" onclick="window.KulinerHub.showAdminTab('adminTabResellers')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-users"></i> 👥 Pendaftar Reseller
+                </button>
+                <button type="button" data-admin-tab="adminTabBackup" onclick="window.KulinerHub.showAdminTab('adminTabBackup')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-hard-drive"></i> 💾 Backup & Pulihkan
+                </button>
+                <button type="button" data-admin-tab="adminTabSettings" onclick="window.KulinerHub.showAdminTab('adminTabSettings')" class="admin-tab-button py-3.5 hover:text-stone-900 flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-gear"></i> Pengaturan QRIS & Toko
+                </button>
+            </div>
+
+            <div id="adminBackNavigation" class="hidden sticky top-[73px] z-[9] border-b border-stone-200 bg-white px-5 py-2">
+                <button type="button" onclick="window.KulinerHub.showAdminTab('adminTabDashboard')" class="inline-flex items-center gap-2 rounded-xl bg-stone-100 px-3 py-2 text-xs font-bold text-stone-800 hover:bg-stone-200">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard
+                </button>
+            </div>
+
+            <!-- ADMIN DASHBOARD -->
+            <div id="adminTabDashboard" class="admin-tab-content p-5 sm:p-6 space-y-5">
+                <div class="flex flex-col gap-3 rounded-2xl border border-orange-200 bg-orange-50/70 p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-stone-900">Ringkasan Operasional</h4>
+                        <p class="mt-1 text-xs text-stone-600">Pesanan hari ini, pembayaran terverifikasi, dan penjualan minggu berjalan.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="adminNotificationButton" type="button" onclick="window.KulinerHub.requestAdminNotifications()" class="rounded-xl bg-stone-900 px-3 py-2 text-xs font-bold text-white">Aktifkan notifikasi browser</button>
+                        <button type="button" onclick="window.KulinerHub.showTodayOrders()" class="rounded-xl bg-orange-600 px-3 py-2 text-xs font-bold text-white">Lihat pesanan hari ini</button>
+                        <button type="button" onclick="document.getElementById('adminDashboardStockList').scrollIntoView({behavior:'smooth'})" class="rounded-xl border border-stone-300 bg-white px-3 py-2 text-xs font-bold text-stone-800">Edit stok</button>
+                    </div>
+                </div>
+                <p class="text-[11px] text-stone-500">Notifikasi browser bekerja pada browser/perangkat ini saat situs terbuka. Data belum tersinkron otomatis ke perangkat lain.</p>
+
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="rounded-2xl border border-stone-200 bg-white p-4">
+                        <span class="block text-xs text-stone-500">Pesanan Hari Ini</span>
+                        <strong id="adminTodayOrderCount" class="text-2xl text-stone-900">0</strong>
+                    </div>
+                    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+                        <span class="block text-xs text-amber-700">Belum Ditangani Hari Ini</span>
+                        <strong id="adminTodayPendingCount" class="text-2xl text-amber-800">0</strong>
+                        <span class="block text-[11px] text-amber-700">Semua belum ditangani: <b id="adminUnhandledCount">0</b></span>
+                    </div>
+                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+                        <span class="block text-xs text-emerald-700">Pembayaran Terverifikasi Hari Ini</span>
+                        <strong id="adminTodayVerifiedCount" class="text-2xl text-emerald-800">0</strong>
+                        <span id="adminTodaySales" class="block text-xs font-bold text-emerald-800">Rp 0</span>
+                    </div>
+                    <div class="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+                        <span class="block text-xs text-blue-700">Penjualan Terverifikasi Minggu Ini</span>
+                        <strong id="adminWeekSales" class="text-lg text-blue-900">Rp 0</strong>
+                        <span class="block text-[11px] text-blue-700"><b id="adminWeekOrderCount">0</b> pesanan</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    <button type="button" onclick="window.KulinerHub.showAdminTab('adminTabOrders')" class="rounded-2xl border border-orange-200 bg-orange-50 p-4 text-left hover:border-orange-400">
+                        <i class="fa-solid fa-receipt text-orange-600"></i>
+                        <strong class="mt-2 block text-sm text-stone-900">Pesanan Hari Ini</strong>
+                        <span class="text-xs text-stone-600">Buka daftar dan verifikasi pesanan</span>
+                    </button>
+                    <button type="button" onclick="window.KulinerHub.showAdminTab('adminTabProducts')" class="rounded-2xl border border-blue-200 bg-blue-50 p-4 text-left hover:border-blue-400">
+                        <i class="fa-solid fa-utensils text-blue-700"></i>
+                        <strong class="mt-2 block text-sm text-stone-900">Edit Menu</strong>
+                        <span class="text-xs text-stone-600">Ubah informasi dan harga menu</span>
+                    </button>
+                    <button type="button" onclick="window.KulinerHub.showAdminTab('adminTabStock')" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-left hover:border-emerald-400">
+                        <i class="fa-solid fa-sliders text-emerald-700"></i>
+                        <strong class="mt-2 block text-sm text-stone-900">Edit Stok</strong>
+                        <span class="text-xs text-stone-600">Atur jumlah/status stok</span>
+                    </button>
+                    <button type="button" onclick="window.KulinerHub.showAdminTab('adminTabAddStock')" class="rounded-2xl border border-violet-200 bg-violet-50 p-4 text-left hover:border-violet-400">
+                        <i class="fa-solid fa-box-open text-violet-700"></i>
+                        <strong class="mt-2 block text-sm text-stone-900">Tambah Stok Baru</strong>
+                        <span class="text-xs text-stone-600">Catat stok masuk untuk menu</span>
+                    </button>
+                </div>
+
+                <div class="flex flex-col gap-3 rounded-2xl border border-stone-200 bg-stone-50 p-4 sm:flex-row sm:items-end sm:justify-between">
+                    <div class="w-full sm:max-w-xs">
+                        <label for="adminVerifierName" class="mb-1 block text-xs font-bold text-stone-700">Nama admin yang menangani/verifikasi</label>
+                        <input id="adminVerifierName" type="text" value="Admin" maxlength="60" onchange="localStorage.setItem('holystore_admin_name_v1', this.value.trim() || 'Admin')" class="w-full rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs">
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="window.KulinerHub.downloadSalesReport('today')" class="rounded-xl bg-emerald-600 px-3 py-2 text-xs font-bold text-white"><i class="fa-solid fa-file-csv"></i> Ekspor Hari Ini</button>
+                        <button type="button" onclick="window.KulinerHub.downloadSalesReport('week')" class="rounded-xl bg-blue-700 px-3 py-2 text-xs font-bold text-white"><i class="fa-solid fa-file-csv"></i> Ekspor Minggu Ini</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TAB 1: QUICK STOCK MANAGEMENT -->
+            <div id="adminTabStock" class="admin-tab-content p-5 sm:p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-orange-50/70 p-4 rounded-2xl border border-orange-200">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-stone-900 flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-orange-600"></i> Edit Stok Menu
+                        </h4>
+                        <p class="text-xs text-stone-600 mt-0.5">Atur stok dengan tombol +/−, masukkan jumlah, atau ubah status ketersediaan.</p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <button type="button" onclick="window.KulinerHub.setAllStockStatus(true)" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 transition">
+                            <i class="fa-solid fa-check-double"></i> Semua Tersedia
+                        </button>
+                        <button type="button" onclick="window.KulinerHub.setAllStockStatus(false)" class="px-3 py-1.5 rounded-xl bg-stone-700 text-white font-bold text-xs hover:bg-stone-800 transition">
+                            <i class="fa-solid fa-ban"></i> Semua Habis
+                        </button>
+                    </div>
+                </div>
+
+                <div id="adminStockList" class="space-y-2.5">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="space-y-2 border-t border-stone-200 pt-4">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-stone-800">Riwayat Perubahan Stok</h4>
+                        <p class="text-xs text-stone-500">Stok masuk, stok keluar karena pesanan, dan penyesuaian manual.</p>
+                    </div>
+                    <div id="adminStockHistory" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- ADD STOCK TAB -->
+            <div id="adminTabAddStock" class="admin-tab-content hidden p-5 sm:p-6 space-y-5">
+                <div class="rounded-2xl border border-violet-200 bg-violet-50 p-4">
+                    <h4 class="font-extrabold text-sm text-violet-950">Tambah Stok Baru</h4>
+                    <p class="mt-1 text-xs text-violet-800">Pilih menu dan jumlah stok masuk. Stok akan langsung diperbarui dan dicatat di riwayat.</p>
+                </div>
+                <form id="formAddStock" class="grid max-w-3xl grid-cols-1 gap-4 rounded-2xl border border-stone-200 bg-white p-5 sm:grid-cols-2">
+                    <div class="sm:col-span-2">
+                        <label for="adminAddStockProduct" class="mb-1 block text-xs font-bold text-stone-700">Menu *</label>
+                        <select id="adminAddStockProduct" required class="w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm"></select>
+                    </div>
+                    <div>
+                        <label for="adminAddStockQuantity" class="mb-1 block text-xs font-bold text-stone-700">Jumlah stok masuk *</label>
+                        <input id="adminAddStockQuantity" type="number" min="1" step="1" required placeholder="Contoh: 10" class="w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label for="adminAddStockNote" class="mb-1 block text-xs font-bold text-stone-700">Catatan (opsional)</label>
+                        <input id="adminAddStockNote" type="text" maxlength="120" placeholder="Contoh: Restok dari dapur mitra" class="w-full rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 text-sm">
+                    </div>
+                    <div class="sm:col-span-2">
+                        <button type="submit" class="rounded-xl bg-violet-700 px-5 py-3 text-sm font-bold text-white hover:bg-violet-800">
+                            <i class="fa-solid fa-plus"></i> Simpan Stok Masuk
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB: RESELLER APPLICANTS -->
+            <div id="adminTabResellers" class="admin-tab-content hidden p-5 sm:p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-3">
+                    <div>
+                        <h4 class="font-extrabold text-sm text-stone-900 flex items-center gap-2">
+                            <i class="fa-solid fa-users text-orange-600"></i> Daftar Calon Reseller / Mitra Holy Store
+                        </h4>
+                        <p class="text-xs text-stone-500">Klik "Chat WA" untuk langsung menghubungi calon reseller dengan salam pembuka otomatis.</p>
+                    </div>
+                </div>
+                <div id="adminResellerList"></div>
+            </div>
+
+            <!-- TAB 2: ORDERS -->
+            <div id="adminTabOrders" class="admin-tab-content hidden p-5 sm:p-6 space-y-4">
+                <div>
+                    <h4 class="font-extrabold text-sm text-stone-800">Pantau Pesanan & Verifikasi Pembayaran</h4>
+                    <p class="text-xs text-stone-500 mt-1">Tinjau detail pesanan, lihat bukti screenshot, dan ubah status pesanan.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="rounded-2xl border border-stone-200 bg-stone-50 p-3">
+                        <span class="block text-xs text-stone-500">Total Pesanan</span>
+                        <strong id="adminOrderCount" class="text-lg text-stone-900">0</strong>
+                    </div>
+                    <div class="rounded-2xl border border-amber-200 bg-amber-50 p-3">
+                        <span class="block text-xs text-amber-700">Menunggu Verifikasi</span>
+                        <strong id="adminPendingOrderCount" class="text-lg text-amber-800">0</strong>
+                    </div>
+                    <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-3">
+                        <span class="block text-xs text-emerald-700">Bukti SS Tersimpan</span>
+                        <strong id="adminProofOrderCount" class="text-lg text-emerald-800">0</strong>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input id="adminOrderSearch" type="search" oninput="window.KulinerHub.filterAdminOrders(this.value)" placeholder="Cari invoice, nama, WA, atau menu..." class="flex-1 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs focus:outline-none focus:border-orange-500">
+                    <select id="adminOrderDateFilter" onchange="window.KulinerHub.setAdminOrderDateFilter(this.value)" class="rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs focus:outline-none focus:border-orange-500">
+                        <option value="all">Semua Tanggal</option>
+                        <option value="today">Hari Ini</option>
+                    </select>
+                    <select id="adminOrderStatusFilter" onchange="window.KulinerHub.setAdminOrderStatusFilter(this.value)" class="rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs focus:outline-none focus:border-orange-500">
+                        <option value="all">Semua Status</option>
+                        <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
+                        <option value="Sedang Diproses">Sedang Diproses</option>
+                        <option value="Selesai">Selesai</option>
+                        <option value="Dibatalkan">Dibatalkan</option>
+                    </select>
+                </div>
+                <div id="adminOrdersList"></div>
+            </div>
+
+            <!-- TAB 3: PRODUCTS -->
+            <div id="adminTabProducts" class="admin-tab-content hidden p-5 sm:p-6 space-y-6">
+                <form id="formAddProduct" class="bg-stone-50 p-4 sm:p-5 rounded-2xl border border-stone-200 space-y-3">
+                    <h5 class="font-bold text-xs text-stone-800 uppercase tracking-wider">Tambah Menu Makanan / Minuman Baru</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div>
+                            <label class="block font-semibold mb-1">Nama Menu *</label>
+                            <input type="text" id="adminProdName" required placeholder="Cth: Nasi Goreng Seafood" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Kategori *</label>
+                            <select id="adminProdCategory" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                                <option value="makanan">Makanan</option>
+                                <option value="minuman">Minuman</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Mitra Penjual *</label>
+                            <select id="adminProductSeller" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2"></select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Harga Jual (Rp) *</label>
+                            <input type="number" id="adminProdPrice" required placeholder="Cth: 25000" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Harga Asal / Coret (Opsional)</label>
+                            <input type="number" id="adminProdOrigPrice" placeholder="Cth: 30000" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Stok Awal (Porsi)</label>
+                            <input type="number" id="adminProdStock" value="20" placeholder="20" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold mb-1">URL Gambar Foto Makanan/Minuman</label>
+                            <input type="url" id="adminProdImage" placeholder="https://..." class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Tag (Pisahkan koma)</label>
+                            <input type="text" id="adminProdTags" placeholder="Cth: Pedas, Best Seller" class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2">
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label class="block font-semibold mb-1">Deskripsi Menu</label>
+                            <textarea id="adminProdDesc" rows="2" placeholder="Jelaskan kelezatan menu ini..." class="w-full bg-white border border-stone-200 rounded-xl px-3 py-2"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-orange-600 text-white font-bold text-xs hover:bg-orange-700 transition">
+                        <i class="fa-solid fa-plus"></i> Tambah Menu ke Katalog
+                    </button>
+                </form>
+
+                <div>
+                    <h5 class="font-bold text-xs text-stone-800 uppercase tracking-wider mb-3">Edit Menu Aktif</h5>
+                    <div id="adminProductsList" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- TAB 4: BACKUP & PULIHKAN DATA -->
+            <div id="adminTabBackup" class="admin-tab-content hidden p-5 sm:p-6 space-y-6">
+                <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 text-xs text-blue-900 space-y-1">
+                    <h5 class="font-bold flex items-center gap-1.5 text-sm">
+                        <i class="fa-solid fa-shield-halved text-blue-600"></i> Sistem Backup Anti-Hilang & Mitigasi Down
+                    </h5>
+                    <p class="leading-relaxed">
+                        Data produk, stok, dan riwayat pesanan Anda tersimpan aman di browser Anda. Unduh file cadangan secara berkala agar Anda dapat memulihkan seluruh data kapan saja jika berganti perangkat atau terjadi error.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Export Box -->
+                    <div class="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm text-stone-800">Unduh Backup Data (.JSON)</h5>
+                            <p class="text-xs text-stone-500 mt-1">Simpan seluruh katalog menu, stok real-time, mitra seller, dan riwayat pesanan ke komputer Anda.</p>
+                        </div>
+                        <button type="button" onclick="window.KulinerHub.exportBackupData()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-xs">
+                            <i class="fa-solid fa-file-arrow-down"></i> Unduh File Backup Sekarang
+                        </button>
+                    </div>
+
+                    <!-- Import Box -->
+                    <div class="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
+                            <i class="fa-solid fa-upload"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm text-stone-800">Pulihkan Dari File Backup</h5>
+                            <p class="text-xs text-stone-500 mt-1">Pilih file `.json` yang pernah Anda unduh untuk mengembalikan seluruh stok dan produk secara instan.</p>
+                        </div>
+                        <label class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+                            <i class="fa-solid fa-file-arrow-up"></i> Pilih File Backup JSON
+                            <input type="file" id="restoreFileInput" accept=".json" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Danger Zone: Reset -->
+                <div class="pt-4 border-t border-stone-200 flex items-center justify-between">
+                    <div>
+                        <h6 class="font-bold text-xs text-red-600">Reset Data ke Bawaan Pabrik</h6>
+                        <p class="text-[11px] text-stone-400">Kembalikan daftar menu dan stok ke kondisi awal contoh.</p>
+                    </div>
+                    <button type="button" onclick="window.KulinerHub.resetToDefaultData()" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 text-xs font-bold transition">
+                        Reset Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 5: SETTINGS & QRIS -->
+            <div id="adminTabSettings" class="admin-tab-content hidden p-5 sm:p-6 space-y-6">
+                <form id="formSettings" class="space-y-4 text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold mb-1">Nomor WhatsApp Reseller (Penerima Pesanan) *</label>
+                            <input type="tel" id="settingWhatsapp" required placeholder="085741832972" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5">
+                            <span class="text-[10px] text-stone-400 mt-0.5 block">Format: 628xxxxxxxx (Gunakan 62 di depan)</span>
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold mb-1">Nama Brand Toko Reseller</label>
+                            <input type="text" id="settingStoreName" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5">
+                        </div>
+
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold mb-1">Tagline / Slogan Toko</label>
+                            <input type="text" id="settingTagline" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold mb-1">PIN Rahasia Pengelola (Ganti PIN)</label>
+                            <input type="password" id="settingPin" maxlength="6" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5">
+                        </div>
+
+                        <div>
+                            <label class="block font-semibold mb-1">URL Gambar QRIS (Atau Upload File di bawah)</label>
+                            <input type="url" id="settingQrisUrl" placeholder="https://..." class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5">
+                        </div>
+
+                        <div class="sm:col-span-2 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                            <label class="block font-bold text-stone-800 mb-1">Upload Gambar QRIS Toko Sendiri (File Gambar):</label>
+                            <input type="file" id="qrisUploadInput" accept="image/*" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-orange-100 file:text-orange-700 hover:file:bg-orange-200 cursor-pointer">
+                            <span class="text-[10px] text-stone-400 mt-1 block">Anda dapat mengunggah file foto QRIS resmi dari bank atau merchant Anda sendiri.</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="px-6 py-3 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md shadow-orange-500/20 transition">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Pengaturan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= PROOF VIEWER MODAL ================= -->
+    <div id="proofViewerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div onclick="document.getElementById('proofViewerModal').classList.add('hidden')" class="absolute inset-0 bg-stone-900/80 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-3xl max-w-lg w-full p-4 shadow-2xl border border-stone-200 z-10 space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+                <span class="font-bold text-xs text-stone-800">
+                    <i class="fa-solid fa-receipt text-orange-600"></i> Bukti Screenshot Transfer Pelanggan
+                </span>
+                <button onclick="document.getElementById('proofViewerModal').classList.add('hidden')" class="w-7 h-7 rounded-full bg-stone-100 text-stone-600 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="max-h-[70vh] overflow-auto flex items-center justify-center bg-stone-100 rounded-2xl p-2">
+                <img id="proofViewerImage" src="" alt="Bukti Transfer" class="max-w-full max-h-[65vh] object-contain rounded-xl shadow-md">
+            </div>
+
+            <div class="text-center pt-1">
+                <button onclick="document.getElementById('proofViewerModal').classList.add('hidden')" class="px-4 py-2 bg-stone-800 text-white font-bold text-xs rounded-xl hover:bg-stone-900 transition">
+                    Tutup Tampilan Bukti
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL DAFTAR RESELLER ================= -->
+    <div id="resellerModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div onclick="window.KulinerHub.closeResellerModal()" class="absolute inset-0 bg-stone-900/70 backdrop-blur-sm"></div>
+
+        <div class="relative bg-white rounded-3xl max-w-xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 z-10 flex flex-col">
+            
+            <!-- Header -->
+            <div class="p-5 border-b border-stone-100 flex items-center justify-between sticky top-0 bg-white z-10">
+                <div class="flex items-center gap-3">
+                    <img src="assets/logo.jpg" alt="Holy Store" class="h-10 w-auto object-contain rounded-xl">
+                    <div>
+                        <h3 class="font-extrabold text-base sm:text-lg text-stone-900">Gabung Jadi Reseller Holy Store</h3>
+                        <p class="text-xs text-stone-500">Kemitraan bisnis aneka makanan & minuman menguntungkan</p>
+                    </div>
+                </div>
+                <button onclick="window.KulinerHub.closeResellerModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center text-sm transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Benefits -->
+            <div class="p-5 bg-gradient-to-br from-orange-50 to-amber-50/40 border-b border-orange-100 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div class="bg-white/80 p-3 rounded-2xl border border-orange-200/60 shadow-2xs">
+                    <i class="fa-solid fa-coins text-orange-600 text-base mb-1 block"></i>
+                    <strong class="text-stone-800 block">Harga Khusus</strong>
+                    <span class="text-[11px] text-stone-500">Margin laba menarik untuk reseller</span>
+                </div>
+                <div class="bg-white/80 p-3 rounded-2xl border border-orange-200/60 shadow-2xs">
+                    <i class="fa-solid fa-burger text-amber-600 text-base mb-1 block"></i>
+                    <strong class="text-stone-800 block">Menu Beragam</strong>
+                    <span class="text-[11px] text-stone-500">Aneka makanan & minuman viral</span>
+                </div>
+                <div class="bg-white/80 p-3 rounded-2xl border border-orange-200/60 shadow-2xs">
+                    <i class="fa-solid fa-bullhorn text-emerald-600 text-base mb-1 block"></i>
+                    <strong class="text-stone-800 block">Bahan Promosi</strong>
+                    <span class="text-[11px] text-stone-500">Foto & konten siap share ke medsos</span>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="formReseller" class="p-5 sm:p-6 space-y-4">
+                <div class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-bold text-stone-700 mb-1">Nama Lengkap Pemilik / Pendaftar *</label>
+                        <input type="text" id="resellerName" required placeholder="Cth: Rina Wijaya" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold text-stone-700 mb-1">Nomor WhatsApp Aktif *</label>
+                            <input type="tel" id="resellerPhone" required placeholder="Cth: 081234567890" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-stone-700 mb-1">Kota / Domisili Operasional *</label>
+                            <input type="text" id="resellerCity" required placeholder="Cth: Jakarta Selatan" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold text-stone-700 mb-1">Tipe Kemitraan *</label>
+                            <select id="resellerType" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                                <option value="Reseller Penjual">Reseller Penjual (Jual Menu Holy Store)</option>
+                                <option value="Mitra Dapur / Supplier">Mitra Dapur (Ingin Titip Menu di Holy Store)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-stone-700 mb-1">Pengalaman Berjualan</label>
+                            <select id="resellerExperience" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                                <option value="Baru Mulai (Pemula)">Baru Mulai (Pemula)</option>
+                                <option value="Pernah Jualan Online (WA/IG/TikTok)">Pernah Jualan Online (WA/IG/TikTok)</option>
+                                <option value="Memiliki Warung / Toko Fisik">Memiliki Warung / Toko Fisik</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-stone-700 mb-1">Nama Toko / Akun Media Sosial (Opsional)</label>
+                        <input type="text" id="resellerSocmed" placeholder="Cth: @snack.rina atau Dapur Bu Rina" class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                    </div>
+
+                    <!-- Subform Produk & Harga yang Diajukan (Otomatis Di-ACC & Tayang) -->
+                    <div class="bg-orange-50/70 p-4 rounded-2xl border border-orange-200/90 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h5 class="font-extrabold text-xs sm:text-sm text-stone-900 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-utensils text-orange-600"></i> Produk & Harga yang Diajukan
+                                </h5>
+                                <p class="text-[11px] text-stone-500">Masukkan produk makanan/minuman Anda. Jika di-ACC pemilik toko, produk akan otomatis di-upload dan tayang di katalog!</p>
+                            </div>
+                            <button type="button" onclick="window.KulinerHub.addResellerProductRow()" class="px-3 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs flex items-center gap-1 shadow-sm transition active:scale-95 cursor-pointer shrink-0">
+                                <i class="fa-solid fa-plus text-[10px]"></i> + Menu Lain
+                            </button>
+                        </div>
+
+                        <!-- Rows Container -->
+                        <div id="resellerProductsContainer" class="space-y-2.5">
+                            <!-- Default Row 1 -->
+                            <div class="reseller-prod-row bg-white p-3 rounded-xl border border-stone-200/90 shadow-2xs space-y-2">
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs">
+                                    <div class="sm:col-span-5">
+                                        <label class="block font-bold text-stone-700 text-[11px] mb-1">Nama Produk / Menu *</label>
+                                        <input type="text" class="prod-row-name w-full bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1.5 focus:bg-white focus:outline-none focus:border-orange-500" required placeholder="Cth: Sambal Cumi Pete Botol">
+                                    </div>
+                                    <div class="sm:col-span-3">
+                                        <label class="block font-bold text-stone-700 text-[11px] mb-1">Kategori *</label>
+                                        <select class="prod-row-cat w-full bg-stone-50 border border-stone-200 rounded-lg px-2 py-1.5 focus:bg-white focus:outline-none focus:border-orange-500">
+                                            <option value="makanan">🍔 Makanan</option>
+                                            <option value="minuman">🍹 Minuman</option>
+                                        </select>
+                                    </div>
+                                    <div class="sm:col-span-4">
+                                        <label class="block font-bold text-stone-700 text-[11px] mb-1">Harga Jual (Rp) *</label>
+                                        <input type="number" class="prod-row-price w-full bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1.5 focus:bg-white focus:outline-none focus:border-orange-500" required placeholder="Cth: 28000">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 text-xs">
+                                    <div class="sm:col-span-7">
+                                        <input type="text" class="prod-row-desc w-full bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1.5 focus:bg-white focus:outline-none focus:border-orange-500 text-[11px]" placeholder="Deskripsi singkat menu (bahan, rasa, porsi)...">
+                                    </div>
+                                    <div class="sm:col-span-5">
+                                        <input type="url" class="prod-row-image w-full bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1.5 focus:bg-white focus:outline-none focus:border-orange-500 text-[11px]" placeholder="Link Foto / Kosongkan jika belum ada">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-stone-700 mb-1">Catatan Tambahan / Pertanyaan (Opsional)</label>
+                        <textarea id="resellerNotes" rows="2" placeholder="Tuliskan jika ada catatan khusus seputar kemitraan atau kapasitas produksi..." class="w-full text-xs sm:text-sm bg-stone-50 border border-stone-200 rounded-xl px-3.5 py-2 focus:bg-white focus:outline-none focus:border-orange-500"></textarea>
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-end gap-3">
+                    <button type="button" onclick="window.KulinerHub.closeResellerModal()" class="w-full sm:w-auto px-5 py-3 rounded-2xl border border-stone-200 text-stone-600 text-xs font-bold hover:bg-stone-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-orange-600 hover:bg-orange-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 transition cursor-pointer">
+                        <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <span>Kirim Pendaftaran ke WhatsApp Admin</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Script Data & Logic -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
